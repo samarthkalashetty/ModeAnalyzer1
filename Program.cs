@@ -1,19 +1,9 @@
 ﻿using System;
 
-enum MoodAnalysisError
-{
-    NULL_MOOD,
-    EMPTY_MOOD,
-    SAD_MOOD
-}
-
 class MoodAnalysisException : Exception
 {
-    public MoodAnalysisError Error { get; }
-
-    public MoodAnalysisException(string message, MoodAnalysisError error) : base(message)
+    public MoodAnalysisException(string message) : base(message)
     {
-        Error = error;
     }
 }
 
@@ -37,15 +27,15 @@ class MoodAnalyzer
         {
             if (message == null)
             {
-                throw new MoodAnalysisException("Mood is null.", MoodAnalysisError.NULL_MOOD);
+                throw new MoodAnalysisException("Mood is NULL.");
             }
             else if (message.Trim() == "")
             {
-                throw new MoodAnalysisException("Mood is empty.", MoodAnalysisError.EMPTY_MOOD);
+                return "HAPPY";
             }
             else if (message.Contains("Sad"))
             {
-                throw new MoodAnalysisException("Mood is sad.", MoodAnalysisError.SAD_MOOD);
+                throw new MoodAnalysisException("Mood is sad.");
             }
             else
             {
@@ -55,7 +45,6 @@ class MoodAnalyzer
         catch (MoodAnalysisException ex)
         {
             Console.WriteLine("Exception: " + ex.Message);
-            Console.WriteLine("Error Type: " + ex.Error);
             return "HAPPY";
         }
     }
@@ -68,18 +57,8 @@ class Program
         Console.WriteLine("Enter a mood message (or leave empty for NULL):");
         string userInput = Console.ReadLine();
 
-        MoodAnalyzer moodAnalyzer = null;
-        if (userInput != null && userInput.Trim() != "")
-        {
-            moodAnalyzer = new MoodAnalyzer(userInput);
-        }
-        else
-        {
-            moodAnalyzer = new MoodAnalyzer();
-        }
-
+        MoodAnalyzer moodAnalyzer = new MoodAnalyzer(userInput);
         string mood = moodAnalyzer.AnalyseMood();
         Console.WriteLine("Mood: " + mood);
     }
 }
-
