@@ -1,9 +1,19 @@
 ﻿using System;
 
+enum MoodAnalysisError
+{
+    NULL_MOOD,
+    EMPTY_MOOD,
+    SAD_MOOD
+}
+
 class MoodAnalysisException : Exception
 {
-    public MoodAnalysisException(string message) : base(message)
+    public MoodAnalysisError Error { get; }
+
+    public MoodAnalysisException(string message, MoodAnalysisError error) : base(message)
     {
+        Error = error;
     }
 }
 
@@ -25,13 +35,17 @@ class MoodAnalyzer
     {
         try
         {
-            if (message == null || message.Trim() == "")
+            if (message == null)
             {
-                throw new MoodAnalysisException("Invalid mood input.");
+                throw new MoodAnalysisException("Mood is null.", MoodAnalysisError.NULL_MOOD);
+            }
+            else if (message.Trim() == "")
+            {
+                throw new MoodAnalysisException("Mood is empty.", MoodAnalysisError.EMPTY_MOOD);
             }
             else if (message.Contains("Sad"))
             {
-                throw new MoodAnalysisException("Mood is sad, but handling the exception.");
+                throw new MoodAnalysisException("Mood is sad.", MoodAnalysisError.SAD_MOOD);
             }
             else
             {
@@ -41,6 +55,7 @@ class MoodAnalyzer
         catch (MoodAnalysisException ex)
         {
             Console.WriteLine("Exception: " + ex.Message);
+            Console.WriteLine("Error Type: " + ex.Error);
             return "HAPPY";
         }
     }
@@ -67,3 +82,4 @@ class Program
         Console.WriteLine("Mood: " + mood);
     }
 }
+
