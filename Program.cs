@@ -9,7 +9,19 @@ class MoodAnalysisException : Exception
 
 class MoodAnalyzer
 {
-    public string AnalyseMood(string message)
+    private string message;
+
+    public MoodAnalyzer()
+    {
+        message = "I am in Any Mood";
+    }
+
+    public MoodAnalyzer(string message)
+    {
+        this.message = message;
+    }
+
+    public string AnalyseMood()
     {
         try
         {
@@ -34,9 +46,12 @@ class Program
 {
     static void Main(string[] args)
     {
-        MoodAnalyzer moodAnalyzer = new MoodAnalyzer();
-        string message = "I am in Any Mood";
-        string mood = moodAnalyzer.AnalyseMood(message);
-        Console.WriteLine("Mood: " + mood);
+        MoodAnalyzer defaultMoodAnalyzer = new MoodAnalyzer();
+        string mood1 = defaultMoodAnalyzer.AnalyseMood();
+        Console.WriteLine("Mood 1: " + mood1);
+
+        MoodAnalyzer customMoodAnalyzer = new MoodAnalyzer("Feeling Sad");
+        string mood2 = customMoodAnalyzer.AnalyseMood();
+        Console.WriteLine("Mood 2: " + mood2);
     }
 }
