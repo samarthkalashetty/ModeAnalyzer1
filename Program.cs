@@ -25,7 +25,11 @@ class MoodAnalyzer
     {
         try
         {
-            if (message.Contains("Sad"))
+            if (message == null || message.Trim() == "")
+            {
+                throw new MoodAnalysisException("Invalid mood input.");
+            }
+            else if (message.Contains("Sad"))
             {
                 throw new MoodAnalysisException("Mood is sad, but handling the exception.");
             }
@@ -46,12 +50,20 @@ class Program
 {
     static void Main(string[] args)
     {
-        MoodAnalyzer moodAnalyzerWithMessage = new MoodAnalyzer("I am in Happy Mood");
-        string mood1 = moodAnalyzerWithMessage.AnalyseMood();
-        Console.WriteLine("Mood 1: " + mood1);
+        Console.WriteLine("Enter a mood message (or leave empty for NULL):");
+        string userInput = Console.ReadLine();
 
-        MoodAnalyzer moodAnalyzerDefault = new MoodAnalyzer();
-        string mood2 = moodAnalyzerDefault.AnalyseMood();
-        Console.WriteLine("Mood 2: " + mood2);
+        MoodAnalyzer moodAnalyzer = null;
+        if (userInput != null && userInput.Trim() != "")
+        {
+            moodAnalyzer = new MoodAnalyzer(userInput);
+        }
+        else
+        {
+            moodAnalyzer = new MoodAnalyzer();
+        }
+
+        string mood = moodAnalyzer.AnalyseMood();
+        Console.WriteLine("Mood: " + mood);
     }
 }
