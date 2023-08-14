@@ -1,5 +1,12 @@
 ﻿using System;
 
+class MoodAnalysisException : Exception
+{
+    public MoodAnalysisException(string message) : base(message)
+    {
+    }
+}
+
 class MoodAnalyzer
 {
     private string message;
@@ -9,14 +16,27 @@ class MoodAnalyzer
         this.message = message;
     }
 
+    public MoodAnalyzer()
+    {
+        message = "I am in Happy Mood";
+    }
+
     public string AnalyseMood()
     {
-        if (message.Contains("Sad"))
+        try
         {
-            return "SAD";
+            if (message.Contains("Sad"))
+            {
+                throw new MoodAnalysisException("Mood is sad, but handling the exception.");
+            }
+            else
+            {
+                return "HAPPY";
+            }
         }
-        else
+        catch (MoodAnalysisException ex)
         {
+            Console.WriteLine("Exception: " + ex.Message);
             return "HAPPY";
         }
     }
@@ -26,8 +46,12 @@ class Program
 {
     static void Main(string[] args)
     {
-        MoodAnalyzer moodAnalyzer = new MoodAnalyzer("I am in Sad Mood");
-        string mood = moodAnalyzer.AnalyseMood();
-        Console.WriteLine("Mood: " + mood);
+        MoodAnalyzer moodAnalyzerWithMessage = new MoodAnalyzer("I am in Happy Mood");
+        string mood1 = moodAnalyzerWithMessage.AnalyseMood();
+        Console.WriteLine("Mood 1: " + mood1);
+
+        MoodAnalyzer moodAnalyzerDefault = new MoodAnalyzer();
+        string mood2 = moodAnalyzerDefault.AnalyseMood();
+        Console.WriteLine("Mood 2: " + mood2);
     }
 }
